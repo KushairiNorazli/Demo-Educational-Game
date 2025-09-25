@@ -1,0 +1,5 @@
+{
+  "name": "Interactive Osmosis Lab",
+  "description": "An interactive science simulation that teaches osmosis through real-time visualization and experimentation. Control the environment around a plant cell and observe osmosis in action.",
+  "requestFramePermissions": []
+}
