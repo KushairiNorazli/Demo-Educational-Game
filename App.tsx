@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { SimulationCanvas } from './components/SimulationCanvas';
@@ -9,7 +8,8 @@ import { Summary } from './components/Summary';
 import { useSimulation } from './hooks/useSimulation';
 import type { Scenario } from './types';
 
-export default function App(): JSX.Element {
+// FIX: Changed return type from JSX.Element to React.JSX.Element to resolve namespace issue.
+export default function App(): React.JSX.Element {
   const {
     state,
     setConcentration,
