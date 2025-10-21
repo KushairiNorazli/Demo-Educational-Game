@@ -110,15 +110,31 @@ export const SimulationCanvas: React.FC<SimulationCanvasProps> = ({ cellState, t
   const membranePath = canvasSize.width > 0 ? generateMembranePath(cellState, canvasSize.width, canvasSize.height) : '';
 
   useEffect(() => {
-    if (containerRef.current) {
-        const { width, height } = containerRef.current.getBoundingClientRect();
-        setCanvasSize({ width, height });
-        setMolecules([
-            ...generateMolecules(70, false, width, height),
-            ...generateMolecules(30, true, width, height)
-        ]);
+    // Use ResizeObserver to handle canvas resizing, ensuring the simulation
+    // adapts to different screen sizes, like fullscreen mode.
+    const observer = new ResizeObserver(entries => {
+      if (!entries || !entries.length) return;
+      
+      const { width, height } = entries[0].contentRect;
+      setCanvasSize({ width, height });
+      
+      // Reset molecules to fit the new canvas dimensions correctly.
+      setMolecules([
+        ...generateMolecules(70, false, width, height),
+        ...generateMolecules(30, true, width, height)
+      ]);
+    });
+
+    const currentRef = containerRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
   }, []);
 
   useEffect(() => {
